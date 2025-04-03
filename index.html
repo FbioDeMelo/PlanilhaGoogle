@@ -1,98 +1,86 @@
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Formulário para Planilha</title>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário para Planilha</title>
+</head>
+<body>
 
-        <h2>Formulário de Contrato</h2>
+    <h2>Formulário de Contrato</h2>
 
-        <form id="contratoForm">
-            <label>Nome completo:</label>
-            <input type="text" name="nome" required><br><br>
+    <form id="contratoForm">
+        <label>Nome completo:</label>
+        <input type="text" name="nome" required><br><br>
 
-            <label>CPF:</label>
-            <input type="text" name="cpf" required><br><br>
+        <label>CPF:</label>
+        <input type="text" name="cpf" required><br><br>
 
-            <label>Data (mês, dia, ano):</label>
-            <input type="text" name="data" required><br><br>
+        <label>Data (mês, dia, ano):</label>
+        <input type="text" name="data" required><br><br>
 
-            <label>Razão Social (se houver):</label>
-            <input type="text" name="razao_social"><br><br>
+        <label>Razão Social (se houver):</label>
+        <input type="text" name="razao_social"><br><br>
 
-            <label>CNPJ (se houver):</label>
-            <input type="text" name="cnpj"><br><br>
+        <label>CNPJ (se houver):</label>
+        <input type="text" name="cnpj"><br><br>
 
-            <label>Nacionalidade:</label>
-            <input type="text" name="nacionalidade" required><br><br>
+        <label>Nacionalidade:</label>
+        <input type="text" name="nacionalidade" required><br><br>
 
-            <label>Estado Civil:</label>
-            <input type="text" name="estado_civil" required><br><br>
+        <label>Estado Civil:</label>
+        <input type="text" name="estado_civil" required><br><br>
 
-            <label>Profissão:</label>
-            <input type="text" name="profissao" required><br><br>
+        <label>Profissão:</label>
+        <input type="text" name="profissao" required><br><br>
 
-            <label>RG:</label>
-            <input type="text" name="rg" required><br><br>
+        <label>RG:</label>
+        <input type="text" name="rg" required><br><br>
 
-            <label>Órgão Expedidor e UF:</label>
-            <input type="text" name="orgao_uf" required><br><br>
+        <label>Órgão Expedidor e UF:</label>
+        <input type="text" name="orgao_uf" required><br><br>
 
-            <label>Endereço Completo:</label>
-            <input type="text" name="endereco" required><br><br>
+        <label>Endereço Completo:</label>
+        <input type="text" name="endereco" required><br><br>
 
-            <label>E-mail:</label>
-            <input type="email" name="email" required><br><br>
+        <label>E-mail:</label>
+        <input type="email" name="email" required><br><br>
 
-            <label>Disciplina(s):</label>
-            <input type="text" name="disciplina" required><br><br>
+        <label>Disciplina(s):</label>
+        <input type="text" name="disciplina" required><br><br>
 
-            <label>Valor:</label>
-            <input type="text" name="valor" required><br><br>
+        <label>Valor:</label>
+        <input type="text" name="valor" required><br><br>
 
-            <label>Valor por extenso:</label>
-            <input type="text" name="valor_extenso" required><br><br>
+        <label>Valor por extenso:</label>
+        <input type="text" name="valor_extenso" required><br><br>
 
-            <button type="submit">Enviar</button>
-        </form>
+        <button type="submit">Enviar</button>
+    </form>
 
-        <p id="mensagem"></p>
-        <a id="linkDoc" href="#" target="_blank" style="display: none;">Abrir Contrato</a>
+    <script>
+        document.getElementById("contratoForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
 
-        <script>
-document.getElementById("contratoForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
+            let formData = new FormData(this);
+            let jsonData = {};
+            formData.forEach((value, key) => { jsonData[key] = value });
 
-    let formData = new FormData(this);
-    let jsonData = {};
-    formData.forEach((value, key) => { jsonData[key] = value });
+            try {
+                let response = await fetch("https://script.google.com/macros/s/AKfycbyEhgyXq5sgvDEN1CAPPZSC7no8yr6csgILszdN2VjLPKSEK_JdIQ4zR--xUiFEwjdBYw/exec", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(jsonData)
+                });
 
-    try {
-        let response = await fetch("https://script.google.com/macros/s/AKfycbwcJN9A4c30efuxS-wdWtrIyRDFV1wpjelP6moQQ2E1xF08GT5wkfIwogsZ4F0V-WVD9g/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(jsonData)
+                console.log("Dados enviados com sucesso!");
+                alert("Dados enviados com sucesso!");
+            } catch (error) {
+                console.error("Erro ao enviar os dados:", error);
+                alert("Erro ao enviar os dados.");
+            }
         });
+    </script>
 
-        let result = await response.json(); 
-
-        if (result.docUrl) {
-            document.getElementById("mensagem").textContent = "Contrato gerado com sucesso!";
-            document.getElementById("linkDoc").href = result.docUrl;
-            document.getElementById("linkDoc").style.display = "block";
-        } else {
-            document.getElementById("mensagem").textContent = "Erro ao gerar contrato.";
-        }
-
-    } catch (error) {
-        console.error("Erro ao enviar os dados:", error);
-        document.getElementById("mensagem").textContent = "Erro ao enviar os dados.";
-    }
-});
-
-        </script>
-
-    </body>
-    </html>
+</body>
+</html>
