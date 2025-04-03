@@ -62,40 +62,36 @@
         <a id="linkDoc" href="#" target="_blank" style="display: none;">Abrir Contrato</a>
 
         <script>
-            document.getElementById("contratoForm").addEventListener("submit", async function(event) {
-                event.preventDefault();
+document.getElementById("contratoForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-                let formData = new FormData(this);
-                let jsonData = {};
-                formData.forEach((value, key) => { jsonData[key] = value });
+    let formData = new FormData(this);
+    let jsonData = {};
+    formData.forEach((value, key) => { jsonData[key] = value });
 
-                try {
-                    let response = await fetch("https://script.google.com/macros/s/AKfycbwcJN9A4c30efuxS-wdWtrIyRDFV1wpjelP6moQQ2E1xF08GT5wkfIwogsZ4F0V-WVD9g/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(jsonData)
+    try {
+        let response = await fetch("https://script.google.com/macros/s/AKfycbwcJN9A4c30efuxS-wdWtrIyRDFV1wpjelP6moQQ2E1xF08GT5wkfIwogsZ4F0V-WVD9g/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData)
+        });
+
+        let result = await response.json(); 
+
+        if (result.docUrl) {
+            document.getElementById("mensagem").textContent = "Contrato gerado com sucesso!";
+            document.getElementById("linkDoc").href = result.docUrl;
+            document.getElementById("linkDoc").style.display = "block";
+        } else {
+            document.getElementById("mensagem").textContent = "Erro ao gerar contrato.";
+        }
+
+    } catch (error) {
+        console.error("Erro ao enviar os dados:", error);
+        document.getElementById("mensagem").textContent = "Erro ao enviar os dados.";
+    }
 });
 
-let result = await response.json();
-
-if (result.docUrl) {
-    document.getElementById("mensagem").textContent = "Contrato gerado com sucesso!";
-    document.getElementById("linkDoc").href = result.docUrl;
-    document.getElementById("linkDoc").style.display = "block";
-} else {
-    document.getElementById("mensagem").textContent = "Erro ao gerar contrato.";
-}
-    
-
-                    document.getElementById("mensagem").textContent = "Contrato gerado com sucesso!";
-                    document.getElementById("linkDoc").href = response.docUrl;
-                    document.getElementById("linkDoc").style.display = "block";
-
-                } catch (error) {
-                    console.error("Erro ao enviar os dados:", error);
-                    document.getElementById("mensagem").textContent = "Erro ao enviar os dados.";
-                }
-            });
         </script>
 
     </body>
