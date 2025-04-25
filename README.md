@@ -1,4 +1,4 @@
-Sistema de Automatização de Contratos
+
 Este é um sistema desenvolvido para automatizar a criação de contratos para a instituição Líbano Educacional. O sistema coleta dados de um formulário web e gera contratos personalizados utilizando Google Apps Script, além de registrar os dados em uma planilha do Google Sheets.
 
 Funcionalidades
